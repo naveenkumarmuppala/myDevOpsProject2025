@@ -33,8 +33,9 @@ pipeline {
     success {
       script {
         // Transition issue PROJ-123 from In Progress → Done
-        jiraTransitionIssue idOrKey: 'DSO-1',
-          input: [transition: [id: '31']]
+        jiraTransitionIssue site: 'naveen-kumar-muppala.atlassian.net',
+                            idOrKey: 'DSO-1',
+                            input: [transition: [id: '31']]
       }
     }
   }
