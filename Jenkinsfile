@@ -34,8 +34,8 @@ pipeline {
       script {
         // Transition issue PROJ-123 from In Progress → Done
         jiraTransitionIssue site: 'jira-jenkins',
-                            issueKeys: 'DSO-1',
-                            input: [transition: [id: '21']]
+                            idOrKey: 'DSO-1',
+                            input: [transition: [id: '31']]
       }
     }
   }
