@@ -33,7 +33,7 @@ pipeline {
     success {
       script {
         // Transition issue PROJ-123 from In Progress → Done
-        jiraTransitionIssue site: 'naveen-kumar-muppala.atlassian.net',
+        jiraTransitionIssue site: 'jira-jenkins',
                             idOrKey: 'DSO-1',
                             input: [transition: [id: '31']]
       }
