@@ -1,0 +1,117 @@
+
+1.0dso-nkm_dsoJavaFrontend"1757808373273*java2.B¼
+1
+,src/test/java/com/mycompany/app/AppTest.java2
+	
+type3
+	
+TEST4
+
+
+module-key5
+
+dso-nkm_dso6
+
+package8
+"
+dso-nkm_dso:com.mycompany.app9
+
+com.mycompany.app.AppTest11
+
+class12
+
+access13
+
+public14
+
+simple-name15
+
+AppTest16
+7
+1com.mycompany.app.AppTest#shouldAnswerWithTrue()V18
+
+method19
+
+shouldAnswerWithTrue20
+ 
+org.junit.jupiter.api.Test22
+
+unknown23
+
+annotated by24
+
+
+uses25
+&
+ org.junit.jupiter.api.Assertions27
+
+
+references28
+5
+/org.junit.jupiter.api.Assertions#assertTrue(Z)V30
+
+calls31J#
+!
+1
+12
+
+3
+4
+
+5
+6Z
+
+7
+7982
+
+
+5
+6jÀ
+
+21
+212223
+
+29
+293023
+>
+108
+101112 *
+1
+ 
+(:7B
+
+
+13
+14
+
+
+15
+16
+
+26
+262723
+B
+17<
+171819 *
+1 (210:7B
+
+
+13
+14
+
+
+15
+20rl
+
+172124*
+1 (
+
+172125*
+1 (
+
+
+172628*
+1	 (
+
+172931*
+1	 (

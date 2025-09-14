@@ -1,0 +1,7 @@
+organization=dso-nkm
+projectKey=dso-nkm_dso
+serverUrl=https://sonarcloud.io
+serverVersion=8.0.0.67173
+dashboardUrl=https://sonarcloud.io/dashboard?id=dso-nkm_dso
+ceTaskId=AZlHMxW5UroKsKjspIi_
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZlHMxW5UroKsKjspIi_
