@@ -69,12 +69,6 @@ pipeline {
 							       environmentName: 'development',
 							       environmentType: 'development',
 							       issueKeys: ['DSO-2']
-								       jiraEditIssue site: 'jira-jenkins'
-								       idOrKey: 'DSO-2', issue: [
-								       fields: [
-									       labels: ['deployed']
-								       ]
-								       ]
 				}
 			}
 
@@ -83,10 +77,17 @@ pipeline {
 	post {
 		success {
 			script {
-				// Transition issue PROJ-123 from In Progress → Done
-				jiraTransitionIssue site: 'jira-jenkins',
-						    idOrKey: 'DSO-2',
-						    input: [transition: [id: '31']]
+				jiraEditIssue site: 'jira-jenkins'
+					idOrKey: 'DSO-2', issue: [
+					fields: [
+						labels: ['deployed']
+					]
+					]
+
+					// Transition issue PROJ-123 from In Progress → Done
+					jiraTransitionIssue site: 'jira-jenkins',
+							    idOrKey: 'DSO-2',
+							    input: [transition: [id: '31']]
 			}
 		}
 	}
