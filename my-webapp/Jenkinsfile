@@ -66,8 +66,8 @@ pipeline {
 					// send deployment info (include environment info as needed)
 					jiraSendDeploymentInfo site: 'naveen-kumar-muppala.atlassian.net',
 							       environmentId: 'DSO-2',
-							       environmentName: 'dev',
-							       environmentType: 'dev',
+							       environmentName: 'development',
+							       environmentType: 'development',
 							       issueKeys: ['DSO-2']
 				}
 			}
