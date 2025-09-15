@@ -69,6 +69,11 @@ pipeline {
 							       environmentName: 'development',
 							       environmentType: 'development',
 							       issueKeys: ['DSO-2']
+                                        // Add 'deployed' label in Jira after successful deployment
+                                        jiraAddLabels site: 'jira-jenkins',
+                                                      idOrKey: 'DSO-2',
+                                                      labels: ['deployed']
+
 				}
 			}
 
@@ -77,11 +82,6 @@ pipeline {
 	post {
 		success {
 			script {
-				// Add 'deployed' label in Jira after successful deployment
-				jiraAddLabels site: 'jira-jenkins',
-					      idOrKey: 'DSO-2',
-					      labels: ['deployed']
-
 			        // Transition issue PROJ-123 from In Progress → Done
                                 jiraTransitionIssue site: 'jira-jenkins',
 					      idOrKey: 'DSO-2',
