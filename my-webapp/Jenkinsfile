@@ -69,7 +69,8 @@ pipeline {
 							       environmentName: 'development',
 							       environmentType: 'development',
 							       issueKeys: ['DSO-2']
-								       jiraEditIssue idOrKey: 'DSO-2', issue: [
+								       jiraEditIssue site: 'jira-jenkins'
+								       idOrKey: 'DSO-2', issue: [
 								       fields: [
 									       labels: ['deployed']
 								       ]
