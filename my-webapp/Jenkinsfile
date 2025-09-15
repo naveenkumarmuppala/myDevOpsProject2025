@@ -1,61 +1,88 @@
 pipeline {
-    agent any
+	agent any
 
-    tools {
-        maven 'maven-3.9.11'
-        jdk 'java-21'
-    }
+		tools {
+			maven 'maven-3.9.11'
+				jdk 'java-21'
+		}
 
-    environment {
-        TOMCAT_URL = "http://192.168.161.4:8080"
-        APP_NAME   = "my-webapp"
+	environment {
+		TOMCAT_URL = "http://192.168.161.4:8080"
+			APP_NAME   = "my-webapp"
 
-        SONAR_HOST_URL = "https://sonarcloud.io"
-        SONAR_ORG      = "dso-nkm"      
-        SONAR_PROJECT  = "my-webapp"     
-    }
+			SONAR_HOST_URL = "https://sonarcloud.io"
+			SONAR_ORG      = "dso-nkm"      
+			SONAR_PROJECT  = "my-webapp"     
+	}
 
-    stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'main', url: 'https://github.com/naveenkumarmuppala/myDevOpsProject2025.git'
-            }
-        }
+	stages {
+		stage('Checkout') {
+			steps {
+				git branch: 'main', url: 'https://github.com/naveenkumarmuppala/myDevOpsProject2025.git'
+			}
+		}
 
-        stage('Build') {
-            steps {
-                sh """
-		    cd my-webapp
-		    mvn clean package
-		"""
-            }
-        }
+		stage('Build') {
+			steps {
+				sh """
+					cd my-webapp
+					mvn clean package
+					"""
+			}
+			post {
+				always {
+					jiraSendBuildInfo site: 'naveen-kumar-muppala.atlassian.net'
+				} 
+			}
+		}
 
-        stage('SonarCloud Analysis') {
-            steps {
-                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
-                    sh """
-                       cd my-webapp
-                       mvn sonar:sonar \
-                          -Dsonar.projectKey=${SONAR_PROJECT} \
-                          -Dsonar.organization=${SONAR_ORG} \
-                          -Dsonar.host.url=${SONAR_HOST_URL} \
-                          -Dsonar.login=$SONAR_TOKEN
-                    """
-                }
-            }
-        }
+		stage('SonarCloud Analysis') {
+			steps {
+				withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+					sh """
+						cd my-webapp
+						mvn sonar:sonar \
+						-Dsonar.projectKey=${SONAR_PROJECT} \
+						-Dsonar.organization=${SONAR_ORG} \
+						-Dsonar.host.url=${SONAR_HOST_URL} \
+						-Dsonar.login=$SONAR_TOKEN
+						"""
+				}
+			}
+		}
 
-        stage('Deploy to Tomcat') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'tomcat-creds', usernameVariable: 'TOMCAT_USER', passwordVariable: 'TOMCAT_PASS')]) {
-                    sh """
-                        curl -u $TOMCAT_USER:$TOMCAT_PASS \
-                        -T /var/lib/jenkins/workspace/end-to-end-devops-automation/my-webapp/target/${APP_NAME}.war \
-                        "$TOMCAT_URL/manager/text/deploy?path=/${APP_NAME}&update=true"
-                    """
-                }
-            }
-        }
-    }
+		stage('Deploy to Tomcat') {
+			steps {
+				withCredentials([usernamePassword(credentialsId: 'tomcat-creds', usernameVariable: 'TOMCAT_USER', passwordVariable: 'TOMCAT_PASS')]) {
+					sh """
+						curl -u $TOMCAT_USER:$TOMCAT_PASS \
+						-T /var/lib/jenkins/workspace/end-to-end-devops-automation/my-webapp/target/${APP_NAME}.war \
+						"$TOMCAT_URL/manager/text/deploy?path=/${APP_NAME}&update=true"
+						"""
+				}
+			}
+			post {
+				success {
+					// send deployment info (include environment info as needed)
+					jiraSendDeploymentInfo site: 'naveen-kumar-muppala.atlassian.net',
+							       environmentId: 'DSO-2',
+							       environmentName: 'dev',
+							       environmentType: 'dev',
+							       issueKeys: ['DSO-2']
+				}
+			}
+
+		}
+	}
+	post {
+		success {
+			script {
+				// Transition issue PROJ-123 from In Progress → Done
+				jiraTransitionIssue site: 'jira-jenkins',
+						    idOrKey: 'DSO-2',
+						    input: [transition: [id: '31']]
+			}
+		}
+	}
+
 }
