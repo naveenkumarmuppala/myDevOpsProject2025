@@ -77,6 +77,17 @@ pipeline {
 	post {
 		success {
 			script {
+				// Add 'deployed' label in Jira after successful deployment
+				jiraAddLabels site: 'jira-jenkins',
+					      idOrKey: 'DSO-1',
+					      labels: ['deployed']
+			}
+		}
+	}
+
+	post {
+		success {
+			script {
 				// Transition issue PROJ-123 from In Progress → Done
 				jiraTransitionIssue site: 'jira-jenkins',
 						    idOrKey: 'DSO-2',
