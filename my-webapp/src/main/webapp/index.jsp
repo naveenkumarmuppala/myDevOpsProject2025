@@ -1,5 +1,5 @@
 <html>
 <body>
-<h2>Hello, World! Deployed via Jenkins on Tomcat 🚀</h2>
+<h2>Hello, World! Implemented DevOps End-to-End Project Automation</h2>
 </body>
 </html>
