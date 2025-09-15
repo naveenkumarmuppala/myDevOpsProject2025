@@ -77,19 +77,26 @@ pipeline {
 	post {
 		success {
 			script {
-				jiraEditIssue site: 'jira-jenkins'
-					idOrKey: 'DSO-2', issue: [
-					fields: [
+				// ✅ Update labels on the issue
+				jiraEditIssue(
+						site: 'jira-jenkins',
+						idOrKey: 'DSO-2',
+						issue: [
+						fields: [
 						labels: ['deployed']
-					]
-					]
+						]
+						]
+					     )
 
-					// Transition issue PROJ-123 from In Progress → Done
-					jiraTransitionIssue site: 'jira-jenkins',
-							    idOrKey: 'DSO-2',
-							    input: [transition: [id: '31']]
+					// ✅ Transition the issue
+					jiraTransitionIssue(
+							site: 'jira-jenkins',
+							idOrKey: 'DSO-2',
+							input: [
+							transition: [id: '31']
+							]
+							)
 			}
 		}
 	}
-
 }
