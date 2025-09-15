@@ -11,8 +11,8 @@ pipeline {
         APP_NAME   = "my-webapp"
 
         SONAR_HOST_URL = "https://sonarcloud.io"
-        SONAR_ORG      = "DevOps"      
-        SONAR_PROJECT  = "dso-nkm"     
+        SONAR_ORG      = "dso-nkm"      
+        SONAR_PROJECT  = "my-webapp"     
     }
 
     stages {
