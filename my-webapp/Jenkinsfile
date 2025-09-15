@@ -81,17 +81,11 @@ pipeline {
 				jiraAddLabels site: 'jira-jenkins',
 					      idOrKey: 'DSO-2',
 					      labels: ['deployed']
-			}
-		}
-	}
 
-	post {
-		success {
-			script {
-				// Transition issue PROJ-123 from In Progress → Done
-				jiraTransitionIssue site: 'jira-jenkins',
-						    idOrKey: 'DSO-2',
-						    input: [transition: [id: '31']]
+			        // Transition issue PROJ-123 from In Progress → Done
+                                jiraTransitionIssue site: 'jira-jenkins',
+					      idOrKey: 'DSO-2',
+					      input: [transition: [id: '31']]
 			}
 		}
 	}
