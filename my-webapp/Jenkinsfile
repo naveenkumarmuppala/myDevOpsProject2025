@@ -79,7 +79,7 @@ pipeline {
 			script {
 				// Add 'deployed' label in Jira after successful deployment
 				jiraAddLabels site: 'jira-jenkins',
-					      idOrKey: 'DSO-1',
+					      idOrKey: 'DSO-2',
 					      labels: ['deployed']
 			}
 		}
