@@ -41,12 +41,15 @@ pipeline {
 				} 
 			}
 		}
+
 		stage('Upload to Artifactory') {
 			steps {
-				sh '''
-					curl -u${USER}:${PASSWORD} -T my-webapp/target/${APP_NAME}.war \
-					"${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/${APP_NAME}/${BUILD_NUMBER}/${APP_NAME}.war"
-					'''
+				withCredentials([usernamePassword(credentialsId: 'jfrog-creds', usernameVariable: 'ART_USER', passwordVariable: 'ART_PASS')]) {
+					sh '''
+						curl -u${ART_USER}:${ART_PASS} -T my-webapp/target/${APP_NAME}.war \
+						"${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/${APP_NAME}/${BUILD_NUMBER}/${APP_NAME}.war"
+						'''
+				}
 			}
 		}
 
@@ -66,13 +69,15 @@ pipeline {
 		}
 		stage('Download from Artifactory') {
 			steps {
-				sh '''
-					cd my-webapp
-					mkdir -p downloaded-artifacts
-					curl -u${USER}:${PASSWORD} -O \
-					"${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/${APP_NAME}/${BUILD_NUMBER}/${APP_NAME}.war"
-					mv ${APP_NAME}.war downloaded-artifacts/
-					'''
+				withCredentials([usernamePassword(credentialsId: 'jfrog-creds', usernameVariable: 'ART_USER', passwordVariable: 'ART_PASS')]) {
+					sh '''
+						cd my-webapp
+						mkdir -p downloaded-artifacts
+						curl -u${ART_USER}:${ART_PASS} -O \
+						"${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/${APP_NAME}/${BUILD_NUMBER}/${APP_NAME}.war"
+						mv ${APP_NAME}.war downloaded-artifacts/
+						'''
+				}
 			}
 		}
 		stage('Deploy to Tomcat') {
