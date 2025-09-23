@@ -22,6 +22,14 @@ pipeline {
 	}
 
 	stages {
+		stage('Cleanup Workspace') {
+			steps {
+				script {
+					clean_ws()
+				}
+			}
+		}	
+
 		stage('Checkout') {
 			steps {
 				git branch: 'main', url: 'https://github.com/naveenkumarmuppala/myDevOpsProject2025.git'
