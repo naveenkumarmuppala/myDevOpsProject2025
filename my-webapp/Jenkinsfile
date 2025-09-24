@@ -16,8 +16,6 @@ pipeline {
 
 			ARTIFACTORY_URL = "http://192.168.161.3:8081/artifactory"
 			ARTIFACTORY_REPO      = "generic-local"
-			USER = "admin"
-			PASSWORD = "AP2VxFh7NA2ecg66Jufhg3WYCUa"
 			BUILD_NUMBER    = "${env.BUILD_NUMBER}"
 	}
 
