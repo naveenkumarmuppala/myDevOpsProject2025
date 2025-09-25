@@ -7,24 +7,31 @@ variable "aws_region" {
 variable "key_name" {
   description = "Existing EC2 key pair name"
   type        = string
+  default     = "terra-automate-key"
 }
 
 variable "public_key_path" {
   description = "Path to public key"
+  type        = string
   default     = "/home/naveen/ec2-terra-key.pub"
 }
 
 variable "project_name" {
-  default = "devops-ec2"
+  description = "Project name"
+  type        = string
+  default     = "devops-ec2"
 }
 
 variable "instance_type" {
-  default = "t3.micro"
+  description = "EC2 instance type"
+  type        = string
+  default     = "t3.micro"
 }
 
 variable "vpc_id" {
-  description = "VPC ID where EC2 will be launched"
+  description = "VPC ID"
   type        = string
+  default     = "vpc-00f06f036ce76276b"
 }
 
 variable "ingress_rules" {
@@ -52,8 +59,9 @@ variable "tags" {
 }
 
 variable "subnet_id" {
-  description = "Subnet ID to launch EC2 in"
+  description = "Subnet ID"
   type        = string
+  default     = "subnet-0b246adb236e01de7"
 }
 
 variable "root_volume_size" {
