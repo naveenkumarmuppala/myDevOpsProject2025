@@ -14,3 +14,11 @@ output "aws_user_id" {
   description = "The unique identifier of the IAM entity Terraform is using"
   value       = data.aws_caller_identity.current.user_id
 }
+
+output "ec2_public_ip" {
+  value = aws_instance.devops_ec2.public_ip
+}
+
+output "ec2_public_dns" {
+  value = aws_instance.devops_ec2.public_dns
+}
