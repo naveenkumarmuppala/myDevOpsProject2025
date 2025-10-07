@@ -53,7 +53,6 @@ resource "aws_instance" "devops_ec2" {
   vpc_security_group_ids      = [aws_security_group.devops_sg.id]
   subnet_id                   = var.subnet_id
   associate_public_ip_address = true
-  user_data                   = file("${path.module}/user_data.sh")
 
   root_block_device {
     volume_size = var.root_volume_size
