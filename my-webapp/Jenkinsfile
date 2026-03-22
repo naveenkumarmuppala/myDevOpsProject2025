@@ -14,8 +14,8 @@ pipeline {
 			SONAR_ORG      = "dso-nkm"      
 			SONAR_PROJECT  = "my-webapp"
 
-			ARTIFACTORY_URL = "http://192.168.161.3:8081/artifactory"
-			ARTIFACTORY_REPO      = "generic-local"
+			REPOSITORY_URL = "http://192.168.161.7:8081/repository"
+			REPOSITORY_REPO      = "maven-releases"
 			BUILD_NUMBER    = "${env.BUILD_NUMBER}"
 	}
 
@@ -50,10 +50,10 @@ pipeline {
 
 		stage('Upload to Artifactory') {
 			steps {
-				withCredentials([usernamePassword(credentialsId: 'jfrog-creds', usernameVariable: 'ART_USER', passwordVariable: 'ART_PASS')]) {
+				withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
 					sh '''
-						curl -u${ART_USER}:${ART_PASS} -T my-webapp/target/${APP_NAME}.war \
-						"${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/${APP_NAME}/${BUILD_NUMBER}/${APP_NAME}.war"
+						curl -u${NEXUS_USER}:${NEXUS_PASS} -T my-webapp/target/${APP_NAME}.war \
+						"${REPOSITORY_URL}/${REPOSITORY_REPO}/${APP_NAME}/${BUILD_NUMBER}/${APP_NAME}.war"
 						'''
 				}
 			}
@@ -75,12 +75,12 @@ pipeline {
 		}
 		stage('Download from Artifactory') {
 			steps {
-				withCredentials([usernamePassword(credentialsId: 'jfrog-creds', usernameVariable: 'ART_USER', passwordVariable: 'ART_PASS')]) {
+				withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
 					sh '''
 						cd my-webapp
 						mkdir -p downloaded-artifacts
-						curl -u${ART_USER}:${ART_PASS} -O \
-						"${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/${APP_NAME}/${BUILD_NUMBER}/${APP_NAME}.war"
+						curl -u${NEXUS_USER}:${NEXUS_PASS} -O \
+						"${REPOSITORY_URL}/${REPOSITORY_REPO}/${APP_NAME}/${BUILD_NUMBER}/${APP_NAME}.war"
 						mv ${APP_NAME}.war downloaded-artifacts/
 						'''
 				}
