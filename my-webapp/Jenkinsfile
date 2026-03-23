@@ -100,10 +100,10 @@ pipeline {
 				success {
 					// send deployment info (include environment info as needed)
 					jiraSendDeploymentInfo site: 'naveen-kumar-muppala.atlassian.net',
-							       environmentId: 'DSO-3',
+							       environmentId: 'DSO-1',
 							       environmentName: 'development',
 							       environmentType: 'development',
-							       issueKeys: ['DSO-3']
+							       issueKeys: ['DSO-1']
 				}
 			}
 
@@ -115,7 +115,7 @@ pipeline {
 				// ✅ Update labels on the issue
 				jiraEditIssue(
 						site: 'jira-jenkins',
-						idOrKey: 'DSO-3',
+						idOrKey: 'DSO-1',
 						issue: [
 						fields: [
 						labels: ['deployed']
@@ -126,7 +126,7 @@ pipeline {
 					// ✅ Transition the issue
 					jiraTransitionIssue(
 							site: 'jira-jenkins',
-							idOrKey: 'DSO-3',
+							idOrKey: 'DSO-1',
 							input: [
 							transition: [id: '31']
 							]
