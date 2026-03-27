@@ -38,6 +38,28 @@ pipeline {
 			}
 		}
 
+		stage('Get Jira Key') {
+            steps {
+                script {
+                    def commitMsg = sh(
+                        script: "git log -1 --pretty=%B",
+                        returnStdout: true
+                    ).trim()
+
+                    echo "Commit Message: ${commitMsg}"
+
+                    def matcher = (commitMsg =~ /([A-Z]+-\d+)/)
+
+                    if (matcher) {
+                        env.JIRA_KEY = matcher[0][0]
+                        echo "Extracted Jira Key: ${env.JIRA_KEY}"
+                    } else {
+                        error "No Jira key found in commit message!"
+                    }
+                }
+            }
+        }
+
 		stage('Build') {
 			steps {
 				sh """
@@ -107,10 +129,10 @@ pipeline {
 				success {
 					// send deployment info (include environment info as needed)
 					jiraSendDeploymentInfo site: 'naveen-kumar-muppala.atlassian.net',
-							       environmentId: params.JIRA_KEY,
+							       environmentId: env.JIRA_KEY,
 							       environmentName: 'development',
 							       environmentType: 'development',
-							       issueKeys: [params.JIRA_KEY]
+							       issueKeys: [env.JIRA_KEY]
 				}
 			}
 
@@ -122,7 +144,7 @@ pipeline {
 				// ✅ Update labels on the issue
 				jiraEditIssue(
 						site: 'jira-jenkins',
-						idOrKey: params.JIRA_KEY,
+						idOrKey: env.JIRA_KEY,
 						issue: [
 						fields: [
 						labels: ['deployed']
@@ -133,7 +155,7 @@ pipeline {
 					// ✅ Transition the issue
 					jiraTransitionIssue(
 							site: 'jira-jenkins',
-							idOrKey: params.JIRA_KEY,
+							idOrKey: env.JIRA_KEY,
 							input: [
 							transition: [id: '31']
 							]
