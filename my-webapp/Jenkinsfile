@@ -1,6 +1,10 @@
 pipeline {
 	agent any
 
+		parameters {
+        string(name: 'JIRA_KEY', description: 'Enter Jira Issue Key (e.g., DSO-2)')
+    	}
+
 		tools {
 			maven 'maven-3.9.11'
 				jdk 'java-21'
@@ -106,7 +110,7 @@ pipeline {
 							       environmentId: 'DSO-1',
 							       environmentName: 'development',
 							       environmentType: 'development',
-							       issueKeys: ['DSO-2']
+							       issueKeys: [params.JIRA_KEY]
 				}
 			}
 
@@ -118,7 +122,7 @@ pipeline {
 				// ✅ Update labels on the issue
 				jiraEditIssue(
 						site: 'jira-jenkins',
-						idOrKey: 'DSO-2',
+						idOrKey: params.JIRA_KEY,
 						issue: [
 						fields: [
 						labels: ['deployed']
@@ -129,7 +133,7 @@ pipeline {
 					// ✅ Transition the issue
 					jiraTransitionIssue(
 							site: 'jira-jenkins',
-							idOrKey: 'DSO-2',
+							idOrKey: params.JIRA_KEY,
 							input: [
 							transition: [id: '31']
 							]
