@@ -106,7 +106,7 @@ pipeline {
 							       environmentId: 'DSO-1',
 							       environmentName: 'development',
 							       environmentType: 'development',
-							       issueKeys: ['DSO-1']
+							       issueKeys: ['DSO-2']
 				}
 			}
 
@@ -118,7 +118,7 @@ pipeline {
 				// ✅ Update labels on the issue
 				jiraEditIssue(
 						site: 'jira-jenkins',
-						idOrKey: 'DSO-1',
+						idOrKey: 'DSO-2',
 						issue: [
 						fields: [
 						labels: ['deployed']
@@ -129,7 +129,7 @@ pipeline {
 					// ✅ Transition the issue
 					jiraTransitionIssue(
 							site: 'jira-jenkins',
-							idOrKey: 'DSO-1',
+							idOrKey: 'DSO-2',
 							input: [
 							transition: [id: '31']
 							]
