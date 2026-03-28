@@ -45,8 +45,18 @@ resource "aws_security_group" "devops_sg" {
   tags = var.tags
 }
 
+# Define instance names
+locals {
+  instance_names = {
+    master = "master"
+    slave1 = "slave1"
+    slave2 = "slave2"
+  }
+}
+
 # EC2 Instance
 resource "aws_instance" "devops_ec2" {
+  for_each                    = local.instance_names
   ami                         = data.aws_ami.os_image.id
   instance_type               = var.instance_type
   key_name                    = aws_key_pair.deployer.key_name
@@ -59,6 +69,7 @@ resource "aws_instance" "devops_ec2" {
     volume_type = var.root_volume_type
   }
 
-  tags = merge(var.tags, { Name = "${var.project_name}-ec2" })
+  tags = merge(var.tags, { 
+    Name = "${var.project_name}-k8s-${each.value}" })
 }
 

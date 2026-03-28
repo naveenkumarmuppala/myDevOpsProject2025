@@ -46,7 +46,11 @@ variable "ingress_rules" {
   default = [
     { from = 22, to = 22, protocol = "tcp", cidr_blocks = ["0.0.0.0/0"], description = "SSH" },
     { from = 80, to = 80, protocol = "tcp", cidr_blocks = ["0.0.0.0/0"], description = "HTTP" },
-    { from = 8080, to = 8080, protocol = "tcp", cidr_blocks = ["0.0.0.0/0"], description = "Jenkins" }
+    { from = 8080, to = 8080, protocol = "tcp", cidr_blocks = ["0.0.0.0/0"], description = "Jenkins" },
+    { from = 3000, to = 10000, protocol = "tcp", cidr_blocks = ["0.0.0.0/0"], description = "K8S1" },
+    { from = 30000, to = 32767, protocol = "tcp", cidr_blocks = ["0.0.0.0/0"], description = "K8S2" },
+    { from = 465, to = 465, protocol = "tcp", cidr_blocks = ["0.0.0.0/0"], description = "SMTPS" },
+    { from = 25, to = 25, protocol = "tcp", cidr_blocks = ["0.0.0.0/0"], description = "SMTP" }
   ]
 }
 
@@ -65,9 +69,13 @@ variable "subnet_id" {
 }
 
 variable "root_volume_size" {
-  default = 15
+  default = 25
 }
 
 variable "root_volume_type" {
   default = "gp3"
+}
+
+variable "instance_count" {
+  default = 3
 }
