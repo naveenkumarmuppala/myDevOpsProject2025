@@ -69,14 +69,14 @@ locals {
 
 # EC2 Instance
 resource "aws_instance" "devops_ec2" {
-  for_each                    = local.instance
+  for_each                    = local.instances
   ami                         = data.aws_ami.os_image.id
   instance_type               = each.value.instance_type
   key_name                    = aws_key_pair.deployer.key_name
   vpc_security_group_ids      = [aws_security_group.devops_sg.id]
   subnet_id                   = var.subnet_id
   associate_public_ip_address = true
-  user_data                   = each.value.user_data
+  user_data                   = each.value.userdata
 
   root_block_device {
     volume_size = var.root_volume_size
