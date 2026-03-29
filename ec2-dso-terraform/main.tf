@@ -47,22 +47,36 @@ resource "aws_security_group" "devops_sg" {
 
 # Define instance names
 locals {
-  instance_names = {
-    master = "master"
-    slave1 = "slave1"
-    slave2 = "slave2"
+  instances = {
+    jenkins = {
+      instance_type = "t3.large"
+      user_data     = file("userdata/jenkins.sh")
+    }
+    sonarqube = {
+      instance_type = "t3.medium"
+      user_data     = file("userdata/sonarqube.sh")
+    }
+    nexus = {
+      instance_type = "t3.medium"
+      user_data     = file("userdata/nexus.sh")
+    }
+    grafana = {
+      instance_type = "t3.medium"
+      user_data     = file("userdata/grafana.sh")
+    }
   }
 }
 
 # EC2 Instance
 resource "aws_instance" "devops_ec2" {
-  for_each                    = local.instance_names
+  for_each                    = local.instance
   ami                         = data.aws_ami.os_image.id
-  instance_type               = var.instance_type
+  instance_type               = each.value.instance_type
   key_name                    = aws_key_pair.deployer.key_name
   vpc_security_group_ids      = [aws_security_group.devops_sg.id]
   subnet_id                   = var.subnet_id
   associate_public_ip_address = true
+  user_data                   = each.value.user_data
 
   root_block_device {
     volume_size = var.root_volume_size
@@ -70,6 +84,7 @@ resource "aws_instance" "devops_ec2" {
   }
 
   tags = merge(var.tags, { 
-    Name = "${var.project_name}-k8s-${each.value}" })
+    Name = "${var.project_name}-k8s-${each.key}"
+    Role = each.key })
 }
 

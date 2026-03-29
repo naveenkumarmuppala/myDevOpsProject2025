@@ -22,12 +22,6 @@ variable "project_name" {
   default     = "devops-ec2"
 }
 
-variable "instance_type" {
-  description = "EC2 instance type"
-  type        = string
-  default     = "t3.medium"
-}
-
 variable "vpc_id" {
   description = "VPC ID"
   type        = string
@@ -74,8 +68,4 @@ variable "root_volume_size" {
 
 variable "root_volume_type" {
   default = "gp3"
-}
-
-variable "instance_count" {
-  default = 3
 }
