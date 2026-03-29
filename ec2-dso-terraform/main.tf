@@ -50,19 +50,19 @@ locals {
   instances = {
     jenkins = {
       instance_type = "t3.large"
-      user_data     = file("userdata/jenkins.sh")
+      user_data     = file("user-data/jenkins.sh")
     }
     sonarqube = {
       instance_type = "t3.medium"
-      user_data     = file("userdata/sonarqube.sh")
+      user_data     = file("user-data/sonarqube.sh")
     }
     nexus = {
       instance_type = "t3.medium"
-      user_data     = file("userdata/nexus.sh")
+      user_data     = file("user-data/nexus.sh")
     }
     grafana = {
       instance_type = "t3.medium"
-      user_data     = file("userdata/grafana.sh")
+      user_data     = file("user-data/grafana.sh")
     }
   }
 }
@@ -76,7 +76,7 @@ resource "aws_instance" "devops_ec2" {
   vpc_security_group_ids      = [aws_security_group.devops_sg.id]
   subnet_id                   = var.subnet_id
   associate_public_ip_address = true
-  user_data                   = each.value.userdata
+  user_data                   = each.value.user_data
 
   root_block_device {
     volume_size = var.root_volume_size
