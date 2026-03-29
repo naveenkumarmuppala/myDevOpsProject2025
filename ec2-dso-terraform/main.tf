@@ -64,6 +64,18 @@ locals {
       instance_type = "t3.medium"
       user_data     = file("user-data/grafana.sh")
     }
+    k8s-master = {
+      instance_type = "t3.medium"
+      user_data     = file("user-data/k8s-master.sh")
+    }
+    k8s-worker1 = {
+      instance_type = "t3.medium"
+      user_data     = file("user-data/k8s-worker1.sh")
+    }
+    k8s-worker2 = {
+      instance_type = "t3.medium"
+      user_data     = file("user-data/k8s-worker2.sh")
+    }
   }
 }
 
@@ -84,7 +96,7 @@ resource "aws_instance" "devops_ec2" {
   }
 
   tags = merge(var.tags, { 
-    Name = "${var.project_name}-k8s-${each.key}"
+    Name = "${var.project_name}-${each.key}"
     Role = each.key })
 }
 
