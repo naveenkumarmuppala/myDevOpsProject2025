@@ -35,3 +35,4 @@ systemctl enable docker
 systemctl start docker
 
 usermod -aG docker ubuntu
+chmod 666 /var/run/docker.sock

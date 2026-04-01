@@ -35,6 +35,19 @@ systemctl enable docker
 systemctl start docker
 
 usermod -aG docker ubuntu
+chmod 666 /var/run/docker.sock
+
+#Install Trivy (for Jenkins security scanning)
+apt-get install -y wget gnupg
+wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
+echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+apt-get update -y
+apt-get install -y  trivy
+
+#Install kubectl (for Jenkins Kubernetes integration)
+curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.8/2026-02-27/bin/linux/amd64/kubectl
+chmod +x kubectl
+mv kubectl /usr/local/bin/
 
 # Install Java (required for Jenkins)
 apt-get install -y fontconfig openjdk-21-jre
