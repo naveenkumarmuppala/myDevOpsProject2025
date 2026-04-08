@@ -50,3 +50,36 @@ sed -i '/^#net.ipv4.ip_forward=1/s/^#//' /etc/sysctl.conf
 sysctl -p
 
 echo "Kubernetes node setup completed"
+
+#Install Node Exporter (for Kubernetes monitoring)
+apt-get install -y wget tar
+
+# =========================
+# Install Node Exporter
+# =========================
+cd /opt
+
+wget https://github.com/prometheus/node_exporter/releases/download/v1.11.1/node_exporter-1.11.1.linux-amd64.tar.gz
+tar -xvf node_exporter-1.11.1.linux-amd64.tar.gz
+mv node_exporter-1.11.1.linux-amd64 node_exporter
+
+useradd --no-create-home --shell /bin/false node_exporter
+chown -R node_exporter:node_exporter /opt/node_exporter
+
+# Node Exporter service
+cat <<EOF > /etc/systemd/system/node_exporter.service
+[Unit]
+Description=Node Exporter
+After=network.target
+
+[Service]
+User=node_exporter
+ExecStart=/opt/node_exporter/node_exporter
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl daemon-reload
+systemctl enable node_exporter
+systemctl start node_exporter
