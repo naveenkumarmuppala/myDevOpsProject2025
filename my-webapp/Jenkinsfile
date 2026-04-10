@@ -129,8 +129,8 @@ pipeline {
 				success {
 					// send deployment info (include environment info as needed)
 					jiraSendDeploymentInfo site: 'naveen-kumar-muppala.atlassian.net',
-							       environmentId: env.JIRA_KEY,
-							       environmentName: 'development',
+							       environmentId: 'dev-env',
+							       environmentName: 'Development',
 							       environmentType: 'development',
 							       issueKeys: [env.JIRA_KEY]
 				}
