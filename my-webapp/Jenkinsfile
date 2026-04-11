@@ -11,7 +11,7 @@ pipeline {
 		}
 
 	environment {
-		TOMCAT_URL = "http://192.168.161.4:8080"
+			TOMCAT_URL = "http://192.168.161.4:8080"
 			APP_NAME   = "my-webapp"
 
 			SONAR_HOST_URL = "https://sonarcloud.io"
@@ -21,6 +21,7 @@ pipeline {
 			REPOSITORY_URL = "http://192.168.161.7:8081/repository"
 			REPOSITORY_REPO      = "maven-releases"
 			BUILD_NUMBER    = "${env.BUILD_NUMBER}"
+			DOCKER_IMAGE    = "mnaveenk85/my-webapp"
 	}
 
 	stages {
@@ -100,6 +101,32 @@ pipeline {
 				}
 			}
 		}
+
+		stage('Build & Push Docker Image') {
+    		steps {
+        		script {
+            		withCredentials([usernamePassword(
+                	credentialsId: 'docker-creds',
+                	usernameVariable: 'DOCKER_USER',
+                	passwordVariable: 'DOCKER_PASS'
+            )]) 	{
+
+                	sh """
+                 		# Build Docker image
+                    	docker build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} -t ${DOCKER_IMAGE}:latest .
+
+                    	# Login to Docker Hub
+                    	echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+
+                    	# Push images
+                    	docker push ${DOCKER_IMAGE}:${BUILD_NUMBER}
+                    	docker push ${DOCKER_IMAGE}:latest
+                	"""
+                	}
+            	}
+        	}
+    	}
+
 		stage('Download from Nexus') {
 			steps {
 				withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
