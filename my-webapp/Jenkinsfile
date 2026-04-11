@@ -78,11 +78,11 @@ pipeline {
 		stage('Upload to Nexus') {
 			steps {
 				withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
-					sh '''
+					sh """
 						curl -v -u${NEXUS_USER}:${NEXUS_PASS} \
 						--upload-file my-webapp/target/${APP_NAME}.war \
 						"${REPOSITORY_URL}/${REPOSITORY_REPO}/com/example/${APP_NAME}/${BUILD_NUMBER}/${APP_NAME}-${BUILD_NUMBER}.war"
-					'''
+					"""
 				}
 			}
 		}
@@ -130,7 +130,7 @@ pipeline {
 		stage('Download from Nexus') {
 			steps {
 				withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
-					sh '''
+					sh """
 						cd my-webapp
 						mkdir -p downloaded-artifacts
 
@@ -138,7 +138,7 @@ pipeline {
 						"${REPOSITORY_URL}/${REPOSITORY_REPO}/com/example/${APP_NAME}/${BUILD_NUMBER}/${APP_NAME}-${BUILD_NUMBER}.war"
 
 						mv ${APP_NAME}-${BUILD_NUMBER}.war downloaded-artifacts/
-					'''
+					"""
 				}
 			}
 		}
