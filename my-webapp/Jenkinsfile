@@ -111,11 +111,14 @@ pipeline {
             		# Remove container if exists
             		docker rm ${APP_NAME} || true
 
-            		# Optional: remove old image latest tag
-            		docker rmi ${DOCKER_IMAGE}:latest || true
+					# Remove ALL local images for this app
+           			 docker images ${DOCKER_IMAGE} -q | sort -u | xargs -r docker rmi -f || true
+
+            		# Remove dangling images/layers
+            		docker image prune -af || true
         		"""
-    }
-}
+    		}
+		}
 
 		stage('Build & Push Docker Image') {
     		steps {
