@@ -102,6 +102,21 @@ pipeline {
 			}
 		}
 
+		stage('Stop and Remove Existing Container') {
+    		steps {
+     			sh """
+            		# Stop container if running
+            		docker stop ${APP_NAME} || true
+
+            		# Remove container if exists
+            		docker rm ${APP_NAME} || true
+
+            		# Optional: remove old image latest tag
+            		docker rmi ${DOCKER_IMAGE}:latest || true
+        		"""
+    }
+}
+
 		stage('Build & Push Docker Image') {
     		steps {
         		script {
