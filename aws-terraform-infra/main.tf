@@ -47,12 +47,7 @@ module "asg" {
     max_size = 4
     min_size = 1
     desired_capacity = 2
-    vpc_id = module.vpc.vpc_id
     private_subnets = module.vpc.private_subnet_ids
     target_group_arn = module.alb.target_group_arn
     ec2_sg = module.security.ec2_sg_id
-    tags = {
-        Environment = "dev"
-        Project     = "vpc-alb-asg"
-    }
 }
