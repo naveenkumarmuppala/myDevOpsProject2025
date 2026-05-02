@@ -50,4 +50,15 @@ module "asg" {
     private_subnets = module.vpc.private_subnet_ids
     target_group_arn = module.alb.target_group_arn
     ec2_sg = module.security.ec2_sg_id
+    instance_profile_name = module.iam.instance_profile_name
+}
+
+module "iam" {
+  source = "./modules/iam"
+
+    name = "dsoapp"
+    tags = {
+        Environment = "dev"
+        Project     = "vpc-alb-asg"
+    }
 }

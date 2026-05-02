@@ -4,6 +4,10 @@ resource "aws_launch_template" "lt" {
   instance_type = var.instance_type
   key_name      = var.key_name
 
+  iam_instance_profile {
+    name = var.iam_instance_profile_name
+  }
+
   user_data = base64encode(<<-EOF
               #!/bin/bash
               yum install -y httpd
