@@ -11,7 +11,6 @@ resource "aws_launch_template" "lt" {
 
   network_interfaces {
     security_groups = [var.ec2_sg]
-    subnet_id       = element(var.private_subnets, 0)
   }
 
   tag_specifications {

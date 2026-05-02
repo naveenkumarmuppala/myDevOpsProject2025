@@ -1,5 +1,5 @@
 resource "aws_lb" "this" {
-  name               = "dso-alb"
+  name               = "${var.name}-alb"
   internal           = "false"
   load_balancer_type = "application"
   security_groups    = [var.alb_sg]
@@ -9,7 +9,7 @@ resource "aws_lb" "this" {
 }
 
 resource "aws_lb_target_group" "tg" {
-  name     = "dso-tg"
+  name     = "${var.name}-tg"
   port     = "80"
   protocol = "HTTP"
   vpc_id   = var.vpc_id

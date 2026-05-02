@@ -1,6 +1,7 @@
 variable "region" {
   description = "AWS region"
   type        = string
+  default     = "us-east-1"
 }
 
 variable "vpc_cidr" {
@@ -41,6 +42,10 @@ variable "alb_sg" {
 variable "ec2_sg" {
   description = "Security group ID for EC2"
   type        = string
+}
+
+variable "ami_name_filter" {
+  default = "amzn2-ami-hvm-*-x86_64-gp2"
 }
 
 variable "tags" {
