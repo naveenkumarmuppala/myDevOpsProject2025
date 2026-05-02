@@ -4,10 +4,14 @@ resource "aws_launch_template" "lt" {
   instance_type = var.instance_type
   key_name      = var.key_name
 
-  user_data = <<-EOF
+  user_data = base64encode(<<-EOF
               #!/bin/bash
-              echo "Hello, World!" > /var/www/html/index.html
+              yum install -y httpd
+              systemctl start httpd
+              systemctl enable httpd
+              echo "Hello from $(hostname)" > /var/www/html/index.html
               EOF
+  )
 
   network_interfaces {
     security_groups = [var.ec2_sg]
