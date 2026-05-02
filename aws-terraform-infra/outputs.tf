@@ -15,7 +15,7 @@ output "private_subnet_ids" {
 
 output "alb_dns_name" {
   description = "ALB DNS name (use this to access application)"
-  value       = module.alb.alb_dns
+  value       = module.alb.alb_dns_name
 }
 
 output "target_group_arn" {
