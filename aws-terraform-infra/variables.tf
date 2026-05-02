@@ -34,11 +34,6 @@ variable "user_data" {
   type        = string
 }
 
-variable "alb_sg" {
-  description = "Security group ID for ALB"
-  type        = string
-}
-
 variable "ec2_sg" {
   description = "Security group ID for EC2"
   type        = string
