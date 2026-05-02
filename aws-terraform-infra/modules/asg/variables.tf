@@ -48,7 +48,7 @@ variable "target_group_arn" {
   type        = string
 }
 
-variable "iam_instance_profile_name" {
+variable "instance_profile_name" {
   description = "IAM instance profile name for ASG"
   type        = string
 }
