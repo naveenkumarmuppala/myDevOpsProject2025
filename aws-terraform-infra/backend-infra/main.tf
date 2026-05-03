@@ -1,7 +1,6 @@
 # s3 bucket for terraform state
 resource "aws_s3_bucket" "tf_state" {
   bucket = "dsoapp-terraform-state-bucket-460474850843"
-  acl    = "private"
 
   tags = {
     Name        = "Terraform State Bucket"
