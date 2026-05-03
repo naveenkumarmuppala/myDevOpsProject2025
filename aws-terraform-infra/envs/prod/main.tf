@@ -1,5 +1,5 @@
 module "vpc" {
-  source = "./modules/vpc"
+  source = "../../modules/vpc"
 
     vpc_cidr = "10.0.0.0/16"
     name = "dsoapp-prod"
@@ -14,7 +14,7 @@ module "vpc" {
 }
 
 module "security" {
-  source = "./modules/security"
+  source = "../../modules/security"
 
     name = "dsoapp-prod"
     vpc_id = module.vpc.vpc_id
@@ -26,7 +26,7 @@ module "security" {
 }
 
 module "alb" {
-  source = "./modules/alb"
+  source = "../../modules/alb"
 
     name = "dsoapp-prod"
     vpc_id = module.vpc.vpc_id
@@ -39,7 +39,7 @@ module "alb" {
 }
 
 module "asg" {
-  source = "./modules/asg"
+  source = "../../modules/asg"
 
     name = "dsoapp-prod"
     ami_id = data.aws_ami.amazon_linux.id
@@ -55,7 +55,7 @@ module "asg" {
 }
 
 module "iam" {
-  source = "./modules/iam"
+  source = "../../modules/iam"
 
     name = "dsoapp-prod"
     tags = {
@@ -65,7 +65,7 @@ module "iam" {
 }
 
 module "bastion" {
-  source = "./modules/bastion"
+  source = "../../modules/bastion"
 
     name = "dsoapp-prod"
     ami_id = data.aws_ami.amazon_linux.id
