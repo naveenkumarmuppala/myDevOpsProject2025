@@ -62,7 +62,7 @@ aws-terraform-infra/
 │   ├── stage/
 │   └── prod/
 |
-│ └── README.md
+└── README.md
 ```
 
 ---
