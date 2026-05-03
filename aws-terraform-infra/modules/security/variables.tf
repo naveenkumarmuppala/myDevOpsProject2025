@@ -8,6 +8,11 @@ variable "vpc_id" {
   type        = string
 }
 
+variable "bastion_sg" {
+  description = "Security group ID of the bastion host"
+  type        = string
+}
+
 variable "tags" {
   description = "Common tags"
   type        = map(string)

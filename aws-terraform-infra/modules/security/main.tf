@@ -45,7 +45,7 @@ resource "aws_security_group" "ec2_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [module.bastion.bastion_sg_id]
+    security_groups = [var.bastion_sg]
   }
 
   egress {
