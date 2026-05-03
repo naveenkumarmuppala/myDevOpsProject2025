@@ -115,7 +115,7 @@ aws-terraform-infra/
 
 ---
 
-## 🌍 Multi-Environment Setup also possible as shown below
+## 🌍 Multi-Environment Setup
 
 Each environment has isolated state:
 
