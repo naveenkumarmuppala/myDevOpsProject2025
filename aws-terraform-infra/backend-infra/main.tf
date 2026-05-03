@@ -1,6 +1,6 @@
 # s3 bucket for terraform state
 resource "aws_s3_bucket" "tf_state" {
-  bucket = "dsoapp-terraform-state-${var.environment}-${var.account_id}"
+  bucket = "dsoapp-terraform-state-${var.environment}-bucket-${var.account_id}"
 
   tags = {
     Name        = "Terraform State Bucket"
