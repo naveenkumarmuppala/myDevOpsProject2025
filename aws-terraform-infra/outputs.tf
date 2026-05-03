@@ -42,3 +42,23 @@ output "ec2_security_group_id" {
   description = "EC2 Security Group ID"
   value       = module.security.ec2_sg_id
 }
+
+output "instance_profile_name" {
+  description = "IAM Instance Profile name for ASG"
+  value       = module.iam.instance_profile_name
+}
+
+output "bastion_instance_id" {
+  description = "ID of the bastion host EC2 instance"
+  value       = module.bastion.bastion_instance_id
+}
+
+output "bastion_public_ip" {
+  description = "Public IP address of the bastion host"
+  value       = module.bastion.bastion_public_ip
+}
+
+output "bastion_sg_id" {
+  description = "ID of the bastion host security group"
+  value       = module.bastion.bastion_sg_id
+}
