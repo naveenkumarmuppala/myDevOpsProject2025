@@ -3,10 +3,6 @@ resource "aws_s3_bucket" "tf_state" {
   bucket = "dsoapp-terraform-state-bucket-460474850843"
   acl    = "private"
 
-  versioning {
-    enabled = true
-  }
-
   tags = {
     Name        = "Terraform State Bucket"
     Environment = "dev"
@@ -87,7 +83,7 @@ resource "aws_kms_key" "tf_state_key" {
       }
     ]
   })
-  
+
   tags = {
     Name        = "Terraform State KMS Key"
     Environment = "dev"
