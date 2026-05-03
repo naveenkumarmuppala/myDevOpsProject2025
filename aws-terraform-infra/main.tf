@@ -62,3 +62,19 @@ module "iam" {
         Project     = "vpc-alb-asg"
     }
 }
+
+module "bastion" {
+  source = "./modules/bastion"
+
+    name = "dsoapp"
+    ami_id = data.aws_ami.amazon_linux.id
+    instance_type = "t2.micro"
+    key_name = "devops-key"
+    public_subnet_id = module.vpc.public_subnet_ids[0]
+    allowed_ssh_cidr = "106.219.176.71/32"
+    vpc_id = module.vpc.vpc_id
+    tags = {
+        Environment = "dev"
+        Project     = "vpc-alb-asg"
+    }
+}
