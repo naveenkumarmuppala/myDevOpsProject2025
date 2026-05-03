@@ -2,7 +2,7 @@ terraform {
   required_version = ">= 0.12"
   backend "s3" {
     bucket         = "dsoapp-terraform-state-bucket-460474850843"
-    key            = "dev/terraform.tfstate"
+    key            = "dev/vpc-alb-asg/terraform.tfstate"
     region         = "us-east-1"
     dynamodb_table = "dsoapp-terraform-state-lock"
     encrypt        = true

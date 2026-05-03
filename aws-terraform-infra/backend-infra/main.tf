@@ -1,11 +1,11 @@
 # s3 bucket for terraform state
 resource "aws_s3_bucket" "tf_state" {
-  bucket = "dsoapp-terraform-state-bucket-460474850843"
+  bucket = "dsoapp-terraform-state-${var.environment}-${var.account_id}"
 
   tags = {
     Name        = "Terraform State Bucket"
-    Environment = "dev"
-    Project     = "vpc-alb-asg"
+    Environment = var.environment
+    Project     = var.project
   }
 }
 
@@ -56,8 +56,8 @@ resource "aws_dynamodb_table" "tf_state_lock" {
 
   tags = {
     Name        = "Terraform State Lock Table"
-    Environment = "dev"
-    Project     = "vpc-alb-asg"
+    Environment = var.environment
+    Project     = var.project
   }
 }
 
@@ -84,9 +84,9 @@ resource "aws_kms_key" "tf_state_key" {
   })
 
   tags = {
-    Name        = "Terraform State KMS Key"
-    Environment = "dev"
-    Project     = "vpc-alb-asg"
+    Name        = "Terraform State ${var.environment} KMS Key"
+    Environment = var.environment
+    Project     = var.project
   }
 }
 
