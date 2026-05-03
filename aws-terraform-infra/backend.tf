@@ -6,5 +6,6 @@ terraform {
     region         = "us-east-1"
     dynamodb_table = "dsoapp-terraform-state-lock"
     encrypt        = true
+    kms_key_id     = "alias/tf-state-key"
   }
 }
