@@ -57,13 +57,12 @@ aws-terraform-infra/
 │   ├── iam/
 │   └── bastion/
 │
-backend.tf
-data.tf
-main.tf
-outputs.tf
-variables.tf
-provider.tf
-└── README.md
+├── envs/
+│   ├── dev/
+│   ├── stage/
+│   └── prod/
+|
+│ └── README.md
 ```
 
 ---
