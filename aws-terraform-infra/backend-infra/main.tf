@@ -1,6 +1,7 @@
 # s3 bucket for terraform state
 resource "aws_s3_bucket" "tf_state" {
   bucket = "dsoapp-terraform-state-${var.environment}-bucket-${var.account_id}"
+  force_destroy = true
 
   tags = {
     Name        = "Terraform State Bucket"
