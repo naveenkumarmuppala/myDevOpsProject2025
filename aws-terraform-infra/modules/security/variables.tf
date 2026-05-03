@@ -8,7 +8,7 @@ variable "vpc_id" {
   type        = string
 }
 
-variable "bastion_sg" {
+variable "bastion_sg_id" {
   description = "Security group ID of the bastion host"
   type        = string
 }

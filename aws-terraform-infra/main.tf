@@ -18,7 +18,7 @@ module "security" {
 
     name = "dsoapp"
     vpc_id = module.vpc.vpc_id
-    bastion_sg = module.bastion.bastion_sg
+    bastion_sg_id = module.bastion.bastion_sg_id
     tags = {
         Environment = "dev"
         Project     = "vpc-alb-asg"
