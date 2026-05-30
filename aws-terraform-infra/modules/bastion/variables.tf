@@ -37,7 +37,7 @@ variable "vpc_id" {
 variable "tags" {
   description = "Tags for the resources"
   type        = map(string)
-  default     = {
+  default = {
     Environment = "dev"
     Project     = "vpc-alb-asg"
   }

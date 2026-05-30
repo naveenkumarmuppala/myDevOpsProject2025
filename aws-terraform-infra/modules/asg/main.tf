@@ -31,10 +31,10 @@ resource "aws_launch_template" "lt" {
 }
 
 resource "aws_autoscaling_group" "asg" {
-  name                      = "${var.name}-asg"
-  max_size                  = var.max_size
-  min_size                  = var.min_size
-  desired_capacity          = var.desired_capacity
+  name             = "${var.name}-asg"
+  max_size         = var.max_size
+  min_size         = var.min_size
+  desired_capacity = var.desired_capacity
   launch_template {
     id      = aws_launch_template.lt.id
     version = "$Latest"

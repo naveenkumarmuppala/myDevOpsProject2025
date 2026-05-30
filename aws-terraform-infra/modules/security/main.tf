@@ -8,14 +8,14 @@ resource "aws_security_group" "alb_sg" {
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    }
+  }
 
-    egress {
+  egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-    }
+  }
 
   tags = merge(var.tags, {
     Name = "${var.name}-alb-sg"
@@ -42,9 +42,9 @@ resource "aws_security_group" "ec2_sg" {
   }
 
   ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
+    from_port       = 22
+    to_port         = 22
+    protocol        = "tcp"
     security_groups = [var.bastion_sg_id]
   }
 

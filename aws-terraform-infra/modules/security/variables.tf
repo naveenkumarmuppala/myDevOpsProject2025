@@ -16,7 +16,7 @@ variable "bastion_sg_id" {
 variable "tags" {
   description = "Common tags"
   type        = map(string)
-  default     = {
+  default = {
     Environment = "dev"
     Project     = "vpc-alb-asg"
   }

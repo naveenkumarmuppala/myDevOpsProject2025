@@ -1,6 +1,6 @@
 resource "aws_iam_role" "ec2_role" {
-  name               = "${var.name}-ec2-role"
-  description        = "IAM role for EC2 instances in ${var.name}"
+  name        = "${var.name}-ec2-role"
+  description = "IAM role for EC2 instances in ${var.name}"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [

@@ -1,6 +1,6 @@
 # s3 bucket for terraform state
 resource "aws_s3_bucket" "tf_state" {
-  bucket = "dsoapp-terraform-state-${var.environment}-bucket-${var.account_id}"
+  bucket        = "dsoapp-terraform-state-${var.environment}-bucket-${var.account_id}"
   force_destroy = true
 
   tags = {
@@ -66,7 +66,7 @@ resource "aws_dynamodb_table" "tf_state_lock" {
 resource "aws_kms_key" "tf_state_key" {
   description             = "KMS key for encrypting Terraform state files"
   deletion_window_in_days = 10
-  enable_key_rotation       = true
+  enable_key_rotation     = true
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -78,7 +78,7 @@ resource "aws_kms_key" "tf_state_key" {
         Principal = {
           AWS = "arn:aws:iam::460474850843:root"
         }
-        Action = "kms:*"
+        Action   = "kms:*"
         Resource = "*"
       }
     ]

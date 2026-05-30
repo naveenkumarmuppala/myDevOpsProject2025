@@ -20,17 +20,17 @@ resource "aws_security_group" "bastion_sg" {
     description = "Allow all outbound traffic"
   }
 
-    tags = merge(var.tags, {
-        Name = "${var.name}-bastion-sg"
-    })
+  tags = merge(var.tags, {
+    Name = "${var.name}-bastion-sg"
+  })
 }
 
 #bastion host EC2 instance
 resource "aws_instance" "bastion" {
-  ami           = var.ami_id
-  instance_type = var.instance_type
-  key_name      = var.key_name
-  subnet_id     = var.public_subnet_id
+  ami             = var.ami_id
+  instance_type   = var.instance_type
+  key_name        = var.key_name
+  subnet_id       = var.public_subnet_id
   security_groups = [aws_security_group.bastion_sg.id]
   tags = merge(var.tags, {
     Name = "${var.name}-bastion"
