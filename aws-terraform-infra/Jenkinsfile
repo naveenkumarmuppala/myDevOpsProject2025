@@ -109,9 +109,8 @@ pipeline {
         timeout(time: 10, unit: 'MINUTES') {
           input(
             message: "Approve terraform ${params.ACTION} for ${params.ENVIRONMENT}?",
-            ok: "${params.ACTION}"
+            ok: "${params.ACTION.capitalize()}"
           )
-          env.APPROVED = 'true'
         }
       }
     }
@@ -119,7 +118,6 @@ pipeline {
     stage('Terraform Apply') {
       when {
         expression { params.ACTION == 'apply' }
-        expression { env.APPROVED == 'true' }
       }
       steps {
         dir("aws-terraform-infra/${env.TERRAFORM_DIR}") {
@@ -136,7 +134,6 @@ pipeline {
     stage('Terraform Destroy') {
       when {
         expression { params.ACTION == 'destroy' }
-        expression { env.APPROVED == 'true' }
       }
       steps {
         dir("aws-terraform-infra/${env.TERRAFORM_DIR}") {
