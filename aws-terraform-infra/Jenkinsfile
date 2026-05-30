@@ -106,10 +106,12 @@ pipeline {
         }
       }
       steps {
-        input(
-          message: "Approve terraform ${params.ACTION} for ${params.ENVIRONMENT}?",
-          ok: "Run ${params.ACTION}"
-        )
+        timeout(time: 2, unit: 'MINUTES') {
+          input(
+            message: "Approve terraform ${params.ACTION} for ${params.ENVIRONMENT}?",
+            ok: "${params.ACTION}"
+          )
+        }
       }
     }
 
