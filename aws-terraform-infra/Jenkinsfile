@@ -104,7 +104,6 @@ pipeline {
           expression { params.ACTION == 'apply' }
           expression { params.ACTION == 'destroy' }
         }
-        beforeinput true
       }
       steps {
         timeout(time: 10, unit: 'MINUTES') {
