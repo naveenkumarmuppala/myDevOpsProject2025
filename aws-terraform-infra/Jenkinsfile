@@ -1,0 +1,163 @@
+pipeline {
+  agent any
+
+  options {
+    ansiColor('xterm')
+    buildDiscarder(logRotator(numToKeepStr: '20'))
+    disableConcurrentBuilds()
+    timestamps()
+  }
+
+  parameters {
+    choice(
+      name: 'ENVIRONMENT',
+      choices: ['dev', 'stage', 'prod'],
+      description: 'Terraform environment to plan or deploy.'
+    )
+    choice(
+      name: 'ACTION',
+      choices: ['plan', 'apply', 'destroy'],
+      description: 'Terraform action to run. Apply and destroy require manual approval.'
+    )
+  }
+
+  environment {
+    AWS_DEFAULT_REGION = 'us-east-1'
+    TF_INPUT = 'false'
+    TF_IN_AUTOMATION = 'true'
+    TF_CLI_ARGS = '-no-color'
+    TERRAFORM_DIR = "envs/${params.ENVIRONMENT}"
+    PLAN_FILE = "tfplan-${params.ENVIRONMENT}"
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('Terraform Version') {
+      steps {
+        dir('aws-terraform-infra') {
+          sh 'terraform version'
+        }
+      }
+    }
+
+    stage('Terraform Init') {
+      steps {
+        dir("aws-terraform-infra/${env.TERRAFORM_DIR}") {
+          withCredentials([[
+            $class: 'AmazonWebServicesCredentialsBinding',
+            credentialsId: 'naveen'
+          ]]) {
+            sh 'terraform init -upgrade'
+          }
+        }
+      }
+    }
+
+    stage('Terraform Format Check') {
+      steps {
+        dir('aws-terraform-infra') {
+          sh 'terraform fmt -check -recursive'
+        }
+      }
+    }
+
+    stage('Terraform Validate') {
+      steps {
+        dir("aws-terraform-infra/${env.TERRAFORM_DIR}") {
+          withCredentials([[
+            $class: 'AmazonWebServicesCredentialsBinding',
+            credentialsId: 'naveen'
+          ]]) {
+            sh 'terraform validate'
+          }
+        }
+      }
+    }
+
+    stage('Terraform Plan') {
+      steps {
+        dir("aws-terraform-infra/${env.TERRAFORM_DIR}") {
+          withCredentials([[
+            $class: 'AmazonWebServicesCredentialsBinding',
+            credentialsId: 'naveen'
+          ]]) {
+            script {
+              if (params.ACTION == 'destroy') {
+                sh "terraform plan -destroy -out=${env.PLAN_FILE}"
+              } else {
+                sh "terraform plan -out=${env.PLAN_FILE}"
+              }
+            }
+          }
+        }
+      }
+    }
+
+    stage('Manual Approval') {
+      when {
+        anyOf {
+          expression { params.ACTION == 'apply' }
+          expression { params.ACTION == 'destroy' }
+        }
+      }
+      steps {
+        input(
+          message: "Approve terraform ${params.ACTION} for ${params.ENVIRONMENT}?",
+          ok: "Run ${params.ACTION}"
+        )
+      }
+    }
+
+    stage('Terraform Apply') {
+      when {
+        expression { params.ACTION == 'apply' }
+      }
+      steps {
+        dir("aws-terraform-infra/${env.TERRAFORM_DIR}") {
+          withCredentials([[
+            $class: 'AmazonWebServicesCredentialsBinding',
+            credentialsId: 'naveen'
+          ]]) {
+            sh "terraform apply -auto-approve ${env.PLAN_FILE}"
+          }
+        }
+      }
+    }
+
+    stage('Terraform Destroy') {
+      when {
+        expression { params.ACTION == 'destroy' }
+      }
+      steps {
+        dir("aws-terraform-infra/${env.TERRAFORM_DIR}") {
+          withCredentials([[
+            $class: 'AmazonWebServicesCredentialsBinding',
+            credentialsId: 'naveen'
+          ]]) {
+            sh "terraform apply -auto-approve ${env.PLAN_FILE}"
+          }
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      archiveArtifacts(
+        artifacts: "aws-terraform-infra/envs/${params.ENVIRONMENT}/${env.PLAN_FILE}",
+        allowEmptyArchive: true,
+        fingerprint: true
+      )
+      cleanWs(
+        deleteDirs: true,
+        disableDeferredWipeout: true,
+        notFailBuild: true
+      )
+    }
+  }
+}

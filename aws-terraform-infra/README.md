@@ -231,6 +231,67 @@ After deployment:
 
 ---
 
+## Jenkins CI/CD
+
+This repo includes `aws-terraform-infra/Jenkinsfile` for Terraform CI/CD across `dev`, `stage`, and `prod`.
+
+### Jenkins prerequisites
+
+Install these tools/plugins on the Jenkins controller or agent:
+
+* Terraform CLI `>= 1.5.0`
+* AWS CLI, if you want to run AWS checks manually from the agent
+* Jenkins Pipeline plugin
+* AWS Credentials plugin support for `AmazonWebServicesCredentialsBinding`
+* Workspace Cleanup plugin for `cleanWs`
+* An agent with network access to AWS, the S3 state buckets, DynamoDB lock table, and KMS key
+
+### Jenkins credentials
+
+Create an AWS credential in Jenkins:
+
+| Jenkins credential ID | Type | Purpose |
+| --------------------- | ---- | ------- |
+| `<your-id>` | AWS access key / secret key | Runs `terraform init`, `plan`, `apply`, and `destroy` |
+
+The IAM principal should have least-privilege access to:
+
+* Read/write the Terraform state S3 buckets
+* Read/write the DynamoDB lock table
+* Use the KMS key alias `alias/tf-state-key`
+* Manage the AWS resources declared in this Terraform project
+
+### Pipeline parameters
+
+| Parameter | Values | Description |
+| --------- | ------ | ----------- |
+| `ENVIRONMENT` | `dev`, `stage`, `prod` | Selects `envs/<environment>` |
+| `ACTION` | `plan`, `apply`, `destroy` | `apply` and `destroy` pause for manual approval |
+
+### Pipeline stages
+
+1. Checkout source
+2. Show Terraform version
+3. Run `terraform init -upgrade`
+4. Run `terraform fmt -check -recursive`
+5. Run `terraform validate`
+6. Create a saved plan file
+7. Wait for manual approval for `apply` or `destroy`
+8. Apply the saved plan
+
+### Create the Jenkins job
+
+1. Create a new Jenkins Pipeline or Multibranch Pipeline job.
+2. Point it at this repository.
+3. Set the script path to:
+
+```text
+aws-terraform-infra/Jenkinsfile
+```
+
+4. Run the job with `ACTION=plan` first.
+5. Review the plan output, then rerun with `ACTION=apply` for the selected environment.
+
 ## 👨‍💻 Author
 
 **DevOps Terraform Learning Project**
