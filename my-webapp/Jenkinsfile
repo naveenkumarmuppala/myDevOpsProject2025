@@ -1,5 +1,5 @@
 pipeline {
-	agent any
+	agent { label 'built-in' }
 
 		parameters {
         string(name: 'JIRA_KEY', description: 'Enter Jira Issue Key (e.g., DSO-2)')
