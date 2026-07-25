@@ -72,7 +72,7 @@ module "bastion" {
   instance_type    = "t2.micro"
   key_name         = "devops-key"
   public_subnet_id = module.vpc.public_subnet_ids[0]
-  allowed_ssh_cidr = "106.219.176.71/32"
+  allowed_ssh_cidr = "101.0.63.11/32"
   vpc_id           = module.vpc.vpc_id
   tags = {
     Environment = "dev"
