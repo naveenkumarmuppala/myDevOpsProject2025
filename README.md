@@ -10,4 +10,4 @@
 # DevOps aws-terraform-infra
 See [aws-terraform-infra/README.md](aws-terraform-infra/README.md)
 # Python Linux automation exercises
-See [python-linux-automation/README.md](python-linux-automation/README.md).
+See [python-linux-automation/README.md](python-linux-automation/README.md)
